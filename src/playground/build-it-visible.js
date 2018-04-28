@@ -1,27 +1,34 @@
-const app = document.getElementById('app');
-let visibility = false; 
 
-const showHide = () => {
-    visibility = !visibility;
-    render();
+class Visibility extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.hundleToogleVisability = this.hundleToogleVisability.bind(this);
+
+        this.state = {
+            visibility: false
+        }
+    } 
+
+    hundleToogleVisability(){
+        this.setState((preState) => {
+            return {
+                visibility: !preState.visibility
+            };
+        });
+    }
+
+    render(){
+        return(
+            <div>
+                <h1>Visibility Toogle</h1>
+                <button onClick={this.hundleToogleVisability}>
+                    {this.state.visibility ? 'Hide Details' : 'Show Details'}
+                </button>
+                {this.state.visibility && (<div> <p>Some text here..</p></div>)}
+            </div>
+        );
+    } 
 }
 
-const render = () => {
-    const Template = (
-        <div>
-            <h1>Visibility Toogle</h1>
-            <button onClick={showHide}>
-                {visibility ? 'Hide Details' : 'Show Details' }
-            </button>
-            {visibility && (
-                <div>
-                    <p>Some text to see..</p>
-                </div>
-            )}
-        </div>
-    )
-
-    ReactDOM.render(Template, app);
-}
-
-render();
+ReactDOM.render(<Visibility />, document.getElementById('app'));
