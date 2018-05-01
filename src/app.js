@@ -12,6 +12,37 @@ class IndecisionApp extends React.Component {
             options: props.options
         };
     }
+
+    componentDidMount() {
+        console.log('component did mount');
+        try {
+
+            const json = localStorage.getItem('Options');
+            const options = JSON.parse(json);
+
+            if (options){
+                this.setState(() => ({ options }));
+            }
+
+        } catch (e) {
+            
+        }
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.options.length !== this.state.options.length) {
+            console.log('saving Data');
+
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem('Options', json);
+        }
+    }
+
+    componentWillUnmount() {
+        console.log('component will unmount');
+    }
+
     handleDeleteOptions(){
         this.setState(() => {
             return {
@@ -126,6 +157,7 @@ const Options = (props) => {
     return (
         <div>
             <button onClick={props.handleDeleteoptions}>Remove All</button>
+            {props.options.length === 0 && <p>Please add an Object</p> }
             {
                 props.options.map((option) => ( 
                     <Option 
@@ -197,6 +229,10 @@ class AddOption extends React.Component {
         // })
 
         this.setState(() => ({ error }))
+
+        if(!error) {
+            e.target.elements.option.value = " ";
+        }
     }
     render() {
         return (
@@ -220,4 +256,4 @@ class AddOption extends React.Component {
 //     );
 // };
 
-ReactDOM.render(<IndecisionApp  options={['One', 'two']}/>, document.getElementById('app'))
+ReactDOM.render(<IndecisionApp />, document.getElementById('app'))

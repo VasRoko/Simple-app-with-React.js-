@@ -28,6 +28,37 @@ var IndecisionApp = function (_React$Component) {
     }
 
     _createClass(IndecisionApp, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log('component did mount');
+            try {
+
+                var json = localStorage.getItem('Options');
+                var options = JSON.parse(json);
+
+                if (options) {
+                    this.setState(function () {
+                        return { options: options };
+                    });
+                }
+            } catch (e) {}
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (prevState.options.length !== this.state.options.length) {
+                console.log('saving Data');
+
+                var json = JSON.stringify(this.state.options);
+                localStorage.setItem('Options', json);
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('component will unmount');
+        }
+    }, {
         key: 'handleDeleteOptions',
         value: function handleDeleteOptions() {
             this.setState(function () {
@@ -174,6 +205,11 @@ var Options = function Options(props) {
             { onClick: props.handleDeleteoptions },
             'Remove All'
         ),
+        props.options.length === 0 && React.createElement(
+            'p',
+            null,
+            'Please add an Object'
+        ),
         props.options.map(function (option) {
             return React.createElement(Option, {
                 key: option,
@@ -257,6 +293,10 @@ var AddOption = function (_React$Component2) {
             this.setState(function () {
                 return { error: error };
             });
+
+            if (!error) {
+                e.target.elements.option.value = " ";
+            }
         }
     }, {
         key: 'render',
@@ -295,4 +335,4 @@ var AddOption = function (_React$Component2) {
 //     );
 // };
 
-ReactDOM.render(React.createElement(IndecisionApp, { options: ['One', 'two'] }), document.getElementById('app'));
+ReactDOM.render(React.createElement(IndecisionApp, null), document.getElementById('app'));
