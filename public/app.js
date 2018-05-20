@@ -19,6 +19,7 @@
 // const getFirstName = (fullName) => {
 //     return fullName.split(' ')[0];
 // }
+
 var getFname = function getFname(fullName) {
   return fullName.split(' ')[0];
 };
